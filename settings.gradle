@@ -1,0 +1,4 @@
+rootProject.name = 'P1-ClientServer'
+include 'Client'
+include 'Server'
+
