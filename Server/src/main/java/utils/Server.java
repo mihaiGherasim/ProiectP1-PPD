@@ -1,5 +1,8 @@
 package utils;
 import domain.Programare;
+
+import java.io.File;
+import java.io.FileWriter;
 import service.Service;
 
 import java.io.IOException;
@@ -18,6 +21,8 @@ public class Server {
     private Timer timer;
     private List<Socket> clients;
     private Socket client;
+    private FileWriter myObj ;
+
     private Service service;
     //private Repo
 
@@ -26,6 +31,12 @@ public class Server {
         threadPool = Executors.newFixedThreadPool(numberOfThreads);
         clients = new ArrayList<Socket>();
         service = new Service();
+        try {
+            myObj = new FileWriter("src/main/java/plati.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void stopServerScheduledTask() {
@@ -67,6 +78,7 @@ public class Server {
             }
             System.out.println("In the end:" + clients.size());
             serverSocket.close();
+            myObj.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,13 +122,22 @@ public class Server {
                 return "stop";
             }
             Programare programare = (Programare) inputStream.readObject();
+            if(programare.getNumeClient().equals("-1plata")){
+                System.out.println("heli");
+                myObj.append(programare.getData().toString() + " " + programare.getCnp() + " " +programare.getSuma() + "\n");
+                return "plata efectuata";
+            }
             System.out.println("Received from client " + programare.toString() + "\n");
             if(service.verificaProgramare(programare)){
+
+
                 return "programare reusita";
             }
             else {
                 return "programare nereusita";
             }
+
+
         }
     }
 }

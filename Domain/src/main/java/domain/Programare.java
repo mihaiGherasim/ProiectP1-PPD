@@ -23,6 +23,7 @@ public class Programare implements Serializable {
     private int idTratament;
     private Date dataTratament;
     private int anulare;
+    private int suma;
 
     @Override
     public String toString() {
@@ -44,6 +45,7 @@ public class Programare implements Serializable {
         this.idLocatie = idLocatie;
         this.idTratament = idTratament;
         this.dataTratament = dataTratament;
+        this.suma = 0;
     }
 
     public static Programare genereazaProgramare(int nrLocatii,int nrTratamente){
@@ -119,6 +121,14 @@ public class Programare implements Serializable {
 
     public void setAnulare(int anulare) {
         this.anulare = anulare;
+    }
+
+    public int getSuma() {
+        return suma;
+    }
+
+    public void setSuma(int suma) {
+        this.suma = suma;
     }
 }
 
