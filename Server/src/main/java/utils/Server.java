@@ -69,6 +69,19 @@ public class Server {
                 processRequest(client);
 
             }
+           cleanupAction();
+            System.out.println("In the end:" + clients.size());
+//            for(int i = 0;i< clients.size();i++){
+//                if(!clients.get(i).isClosed()){
+//
+//                    ObjectOutputStream outputStream = new ObjectOutputStream(clients.get(i).getOutputStream());
+//                    outputStream.writeObject("stop");
+//                    outputStream.flush();
+//                    outputStream.close();
+//                    clients.get(i).close();
+//                }
+//            }
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,6 +121,7 @@ public class Server {
             cleanupAction();
             if(serverStop){
                 timer.cancel();
+                inputStream.readObject();// se citeste ceea ce s-a trimis de catre client
                 return "stop";
             }
                 Programare programare  = (Programare)inputStream.readObject();
