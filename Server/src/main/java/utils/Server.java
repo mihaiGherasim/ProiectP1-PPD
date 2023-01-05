@@ -1,5 +1,7 @@
 package utils;
 import domain.Programare;
+import service.Service;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -16,13 +18,14 @@ public class Server {
     private Timer timer;
     private List<Socket> clients;
     private Socket client;
+    private Service service;
     //private Repo
 
     public Server(int port, int numberOfThreads) {
         this.port = port;
         threadPool = Executors.newFixedThreadPool(numberOfThreads);
         clients = new ArrayList<Socket>();
-
+        service = new Service();
     }
 
     private void stopServerScheduledTask() {
@@ -108,7 +111,12 @@ public class Server {
             }
             Programare programare = (Programare) inputStream.readObject();
             System.out.println("Received from client " + programare.toString() + "\n");
-            return "programare reusita";
+            if(service.verificaProgramare(programare)){
+                return "programare reusita";
+            }
+            else {
+                return "programare nereusita";
+            }
         }
     }
 }
