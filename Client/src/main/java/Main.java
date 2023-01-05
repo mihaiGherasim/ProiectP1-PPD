@@ -8,6 +8,5 @@ public class Main {
         int nrTratamente = 5;
         Client clientWorker = new Client(nrLocatii,nrTratamente);
         clientWorker.connect();
-        System.out.println("stopped client");
     }
 }
