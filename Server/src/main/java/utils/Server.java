@@ -1,5 +1,8 @@
 package utils;
 import domain.Programare;
+
+import java.io.File;
+import java.io.FileWriter;
 import service.Service;
 
 import java.io.IOException;
@@ -18,6 +21,8 @@ public class Server {
     private Timer timer;
     private List<Socket> clients;
     private Socket client;
+    private FileWriter myObj ;
+
     private Service service;
     //private Repo
 
@@ -26,6 +31,12 @@ public class Server {
         threadPool = Executors.newFixedThreadPool(numberOfThreads);
         clients = new ArrayList<Socket>();
         service = new Service();
+        try {
+            myObj = new FileWriter("D:\\FACULTATE-AN3-SEM1\\PPD\\P1-ClientServer\\Server\\src\\main\\java\\plati.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void stopServerScheduledTask() {
@@ -112,11 +123,14 @@ public class Server {
             Programare programare = (Programare) inputStream.readObject();
             System.out.println("Received from client " + programare.toString() + "\n");
             if(service.verificaProgramare(programare)){
+                //TO DO : trimite plata, scrie in fisier, myObj.append()
                 return "programare reusita";
             }
             else {
                 return "programare nereusita";
             }
+
+
         }
     }
 }
