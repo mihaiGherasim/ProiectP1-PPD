@@ -35,15 +35,15 @@ public class Service {
         for(Tratament tratament : tratamente){
             if(tratament.getIdTratament() == idTratament){
                 if(idLocatie == 1) {
-                    max = tratament.getMaxProgramari();
+                    max = tratament.getMaxProgaramari();
                 }
                 else{
-                    max = tratament.getMaxProgramari() * (idLocatie - 1);
+                    max = tratament.getMaxProgaramari() * (idLocatie - 1);
                 }
             }
         }
         for(TratamentLocatie tratamentLocatie:tramenteLocatii){
-            if(tratamentLocatie.getIdLocatie() == idLocatie && tratamentLocatie.getIdTratament() == idTratament){
+            if(tratamentLocatie.getIdLocatie() == idLocatie && tratamentLocatie.getIdTratament() == idTratament && tratamentLocatie.getOra() == programare.getData().getHours()){
                 if(tratamentLocatie.getLocuriOcupate() < max) {
                     tratamentLocatie.setLocuriOcupate(tratamentLocatie.getLocuriOcupate()+1);
                     repoTratament.updateLocuriOcupate(tramenteLocatii);

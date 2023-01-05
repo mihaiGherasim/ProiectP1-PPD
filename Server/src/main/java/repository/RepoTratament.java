@@ -40,7 +40,9 @@ public class RepoTratament {
         FileWriter fileWriter = new FileWriter(fisierTratamentLocatie);
         for(Tratament tratament: getAllTratamente()){
             for(int i=1; i<=5; i++){
-                fileWriter.write(tratament.getIdTratament()+" "+i+" "+0+"\n");
+                for(int j=10; j<=18; j++) {
+                    fileWriter.write(tratament.getIdTratament() + " " + i + " " + j + " " + 0 + "\n");
+                }
             }
         }
         fileWriter.close();
@@ -54,7 +56,7 @@ public class RepoTratament {
             String data = reader.nextLine();
             if(!data.equals("")) {
                 String[] s = data.split(" ");
-                TratamentLocatie tratamentLocatie = new TratamentLocatie(Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]));
+                TratamentLocatie tratamentLocatie = new TratamentLocatie(Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2]), Integer.parseInt(s[3]));
                 tratamenteLocatii.add(tratamentLocatie);
             }
         }
@@ -64,7 +66,7 @@ public class RepoTratament {
     public void updateLocuriOcupate(List<TratamentLocatie> tramenteLocatii) throws IOException {
         FileWriter fileWriter = new FileWriter(fisierTratamentLocatie);
         for(TratamentLocatie tratamentLocatie : tramenteLocatii){
-            fileWriter.write(tratamentLocatie.getIdLocatie()+" "+tratamentLocatie.getIdTratament()+" "+tratamentLocatie.getLocuriOcupate()+"\n");
+            fileWriter.write(tratamentLocatie.getIdLocatie()+" "+tratamentLocatie.getIdTratament() + " " + tratamentLocatie.getOra() +" "+tratamentLocatie.getLocuriOcupate()+"\n");
         }
         fileWriter.close();
     }
