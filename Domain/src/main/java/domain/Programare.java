@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -18,6 +19,7 @@ public class Programare implements Serializable {
     private int idLocatie;
     private int idTratament;
     private Date dataTratament;
+    private int anulare;
 
     @Override
     public String toString() {
@@ -28,10 +30,11 @@ public class Programare implements Serializable {
                 ", idLocatie=" + idLocatie +
                 ", idTratament=" + idTratament +
                 ", dataTratament=" + dataTratament +
+                ", anulare=" + anulare +
                 '}';
     }
 
-    public Programare(String numeClient, String cnp, Date data, int idLocatie, int idTratament, Date dataTratament) {
+    public Programare(String numeClient, String cnp, Date data, int idLocatie, int idTratament, Date dataTratament, int anulare) {
         this.numeClient = numeClient;
         this.cnp = cnp;
         this.data = data;
@@ -53,7 +56,8 @@ public class Programare implements Serializable {
         int idTratament = new Random().nextInt(nrTratamente)+1;
         int idLocatie = new Random().nextInt(nrLocatii)+1;
         Date dataTratament = new Date();
-        return new Programare(numeClient, cnp.toString(), data, idLocatie, idTratament, dataTratament);
+        int anulare = ThreadLocalRandom.current().nextInt(0, 2);
+        return new Programare(numeClient, cnp.toString(), data, idLocatie, idTratament, dataTratament,anulare);
     }
 }
 

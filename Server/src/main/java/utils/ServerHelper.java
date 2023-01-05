@@ -52,10 +52,6 @@ public class ServerHelper implements Runnable {
     @Override
     public synchronized void run() {
         try {
-            if(client.isClosed()){
-                outputStream.close();
-                future.cancel(true);
-                return;}
             String responseMessage = future.get();
             outputStream.writeObject(responseMessage);
             outputStream.flush();
@@ -63,21 +59,11 @@ public class ServerHelper implements Runnable {
             client.close();
 
             if(responseMessage.equals("stop")){
-                System.out.println("Clients in size:" + clients.size());
-                for (Socket socket : clients) {
-                    if (!socket.isClosed()) {
-                        System.out.println("one");
-                        sendStopToOneClient(socket);
-                    }
-                }
-                if(!server.isClosed())
-                    server.close();
+                System.out.println("stop");
                 if(!serverPool.isShutdown())
                     serverPool.shutdown();
 
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
