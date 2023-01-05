@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RepoTratament {
-    private String fisierTratamente = "C:\\Users\\mihai.gherasim\\IdeaProjects\\P1-ClientServer\\Server\\src\\main\\resources\\tratament.txt";
-    private String fisierTratamentLocatie = "C:\\Users\\mihai.gherasim\\IdeaProjects\\P1-ClientServer\\Server\\src\\main\\resources\\tratament-locatie.txt";
+    private String fisierTratamente = "src/main/resources/tratament.txt";
+    private String fisierTratamentLocatie = "src/main/resources/tratament-locatie.txt";
 
     public RepoTratament(){
         try {

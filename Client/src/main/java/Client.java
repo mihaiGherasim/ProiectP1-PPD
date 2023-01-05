@@ -7,9 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public class Client {
@@ -30,7 +28,7 @@ public class Client {
     }
 
     public void connect() {
-     startWork();
+        startWork();
     }
 
     private void startWork() {
@@ -78,13 +76,22 @@ public class Client {
                 System.out.println("I get stop");
                 keepGoing = false;
                 requestTimer.cancel();
+            } else {
+                System.out.println("Received from server: " + response + "\n");
+                if (response.equals("programare reusita")) {
+                    List<Integer> sumeTratamente = Arrays.asList(50, 20, 40, 100, 30);
+                    programare.setNumeClient("-1plata");
+//                programare.setSuma(sumeTratamente.get(programare.getIdTratament() - 1));
+//                  outputStream.writeObject(programare);
+//                outputStream.flush();
+//                response = (String) inputStream.readObject();
+//                System.out.println(response + "\n");
+                }
+                //AICI se face plata
+                inputStream.close();
+                outputStream.close();
+                connection.close();
             }
-            System.out.println("Received from server: " + response + "\n");
-            inputStream.close();
-            outputStream.close();
-            connection.close();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
