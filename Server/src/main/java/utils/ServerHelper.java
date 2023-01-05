@@ -52,10 +52,6 @@ public class ServerHelper implements Runnable {
     @Override
     public synchronized void run() {
         try {
-//            if(client.isClosed()){
-//                outputStream.close();
-//                future.cancel(true);
-//                return;}
             String responseMessage = future.get();
             outputStream.writeObject(responseMessage);
             outputStream.flush();
@@ -64,17 +60,10 @@ public class ServerHelper implements Runnable {
 
             if(responseMessage.equals("stop")){
                 System.out.println("stop");
-//                if(!server.isClosed())
-//                    server.close();
                 if(!serverPool.isShutdown())
                     serverPool.shutdown();
 
-            }else{
-
-
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

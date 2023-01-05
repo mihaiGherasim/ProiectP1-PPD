@@ -1,12 +1,7 @@
 package utils;
-
-
 import domain.Programare;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -30,7 +25,7 @@ public class Server {
 
     }
 
-    private void stopServerScheduledTask(){
+    private void stopServerScheduledTask() {
         timer = new Timer("Timer");
         TimerTask task = new TimerTask() {
             public void run() {
@@ -49,7 +44,7 @@ public class Server {
             serverSocket = new ServerSocket(port);
 
             System.out.println("Server has started...");
-           stopServerScheduledTask();
+            stopServerScheduledTask();
 
             while (!serverSocket.isClosed() && !serverStop) {
 
@@ -59,18 +54,15 @@ public class Server {
                     client = serverSocket.accept();
                     clients.add(client);
 
-                }catch (SocketException ex){
+                } catch (SocketException ex) {
                     System.out.println("Server connection closed");
                     return;
 
                 }
                 System.out.println("Client connected...");
-
                 processRequest(client);
-
             }
             System.out.println("In the end:" + clients.size());
-
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,22 +70,22 @@ public class Server {
 
     }
 
-    private synchronized void cleanupAction(){
+    private synchronized void cleanupAction() {
         List<Socket> updatedClients = new ArrayList<Socket>();
-        for(int i = 0;i < clients.size();i++){
-            if(!clients.get(i).isClosed())updatedClients.add(clients.get(i));
+        for (int i = 0; i < clients.size(); i++) {
+            if (!clients.get(i).isClosed()) updatedClients.add(clients.get(i));
         }
         clients = updatedClients;
     }
 
     private void processRequest(Socket client) {
         Future<String> future = threadPool.submit(new MyCallable(client));
-        Thread thread = new Thread(new ServerHelper(future,client,serverSocket,threadPool,clients));
+        Thread thread = new Thread(new ServerHelper(future, client, serverSocket, threadPool, clients));
         thread.setDaemon(false);
         thread.start();
     }
 
-    private class MyCallable implements Callable<String>{
+    private class MyCallable implements Callable<String> {
         private Socket client;
         private ObjectInputStream inputStream;
 
@@ -109,15 +101,14 @@ public class Server {
         @Override
         public String call() throws Exception {
             cleanupAction();
-            if(serverStop){
+            if (serverStop) {
                 timer.cancel();
-                inputStream.readObject();// se citeste ceea ce s-a trimis de catre client
+                inputStream.readObject();
                 return "stop";
             }
-                Programare programare  = (Programare)inputStream.readObject();
+            Programare programare = (Programare) inputStream.readObject();
             System.out.println("Received from client " + programare.toString() + "\n");
-                return "programare reusita";
-
+            return "programare reusita";
         }
     }
 }
