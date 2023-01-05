@@ -46,8 +46,12 @@ public class Client {
                         e.printStackTrace();
                     }
                     inputStream = new ObjectInputStream(connection.getInputStream());
-                    sendProgramare();
-                } catch (SocketException ex) {
+                    Programare programare = Programare.genereazaProgramare(nrLocatii, nrTratamente);
+                    Programare programare1 = sendProgramare(programare);
+                    if(programare1 != null) {
+                        sendPlata(programare1);
+                    }
+                } catch (SocketException | ClassNotFoundException ex) {
                     System.out.println("Stop client");
                     requestTimer.cancel();
                     try {
@@ -66,12 +70,31 @@ public class Client {
 
     }
 
-    private void sendProgramare() {
-        Programare programare = Programare.genereazaProgramare(nrLocatii, nrTratamente);
+    private void sendPlata(Programare programare) throws IOException, ClassNotFoundException {
+        connection.close();
+        connection = new Socket(host, port);
+        outputStream = new ObjectOutputStream(connection.getOutputStream());
+        try {
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        inputStream = new ObjectInputStream(connection.getInputStream());
+        outputStream.writeObject(programare);
+        outputStream.flush();
+        String response = (String) inputStream.readObject();
+        System.out.println(response + "\n");
+        inputStream.close();
+        outputStream.close();
+        connection.close();
+    }
+
+    private Programare sendProgramare(Programare programare) {
+        String response;
         try {
             outputStream.writeObject(programare);
             outputStream.flush();
-            String response = (String) inputStream.readObject();
+            response = (String) inputStream.readObject();
             if (response.equals("stop")) {
                 System.out.println("I get stop");
                 keepGoing = false;
@@ -81,20 +104,15 @@ public class Client {
                 if (response.equals("programare reusita")) {
                     List<Integer> sumeTratamente = Arrays.asList(50, 20, 40, 100, 30);
                     programare.setNumeClient("-1plata");
-//                programare.setSuma(sumeTratamente.get(programare.getIdTratament() - 1));
-//                  outputStream.writeObject(programare);
-//                outputStream.flush();
-//                response = (String) inputStream.readObject();
-//                System.out.println(response + "\n");
+                    programare.setSuma(sumeTratamente.get(programare.getIdTratament() - 1));
+                    return programare;
                 }
                 //AICI se face plata
-                inputStream.close();
-                outputStream.close();
-                connection.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

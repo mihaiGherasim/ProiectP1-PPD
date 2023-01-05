@@ -31,11 +31,11 @@ public class Server {
         threadPool = Executors.newFixedThreadPool(numberOfThreads);
         clients = new ArrayList<Socket>();
         service = new Service();
-//        try {
-//            myObj = new FileWriter("src/main/java/plati.txt");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            myObj = new FileWriter("src/main/java/plati.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -78,7 +78,7 @@ public class Server {
             }
             System.out.println("In the end:" + clients.size());
             serverSocket.close();
-          //  myObj.close();
+            myObj.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,7 +124,7 @@ public class Server {
             Programare programare = (Programare) inputStream.readObject();
             if(programare.getNumeClient().equals("-1plata")){
                 System.out.println("heli");
-               // myObj.append(programare.getData().toString() + " " + programare.getCnp() + " " +programare.getSuma() + "\n" );
+                myObj.append(programare.getData().toString() + " " + programare.getCnp() + " " +programare.getSuma() + "\n");
                 return "plata efectuata";
             }
             System.out.println("Received from client " + programare.toString() + "\n");
